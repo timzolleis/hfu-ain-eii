@@ -1,0 +1,133 @@
+HFU-EII
+Tim Zolleis
+16.10.2023
+
+** Teilaufgabe 1: Befehle ** 
+    - ls
+    - ps
+    - wc 
+    - du
+    - file
+    - grep
+    - cat
+    - scp
+    - sudo
+
+** ls**
+Befehl um Dateien / Verzeichnisse aufzulisten - falls gewuenscht mit 
+Aenderungsdatum / Berechtigungen
+
+    1. Nach Aenderungsdatum sortieren: ls -c (zeigt Ordner nach ihrem letzten 
+    Aenderungsdatum sortiert
+
+    2. Versteckte Ordner auflisten: ls -la (zeigt auch versteckte Ordner wie 
+    .git an)
+
+    3. Alle Unterverzeichnisse + Dateien auflisten: ls -R (Vorsicht bei grossen 
+    Ordnern :))
+
+** ps ** 
+Befehl um die momentan laufenden Befehle aufzulisten (Abbild, da nicht live wie 
+htop)
+
+    1. Prozesse des aktuellen Terminal anzeigen: ps (Zeigt ProzessID, 
+    Terminal-Typ (TTY meistens), CPU-Zeit des Prozesses, Name des Befehls (PS / 
+    Nano) 
+
+    2. "Task-Manager" bzw. Prozesstabelle anzeigen: ps -axjf (-a um die 
+    "meisten" Prozesse anzuzeigen, x um alle nicht-terminal Prozesse anzuzeigen,
+    j für Job-Formatierung, f für "full format listing" in Tabelle
+
+
+** wc ** 
+Befehl um Groesse (Zeile, Wort, Byte) von Dateien anzugeben
+
+
+    1. Zeilenanzahl ausgeben: wc -l myfile.txt
+
+    2. Wortanzahl ausgeben: wc -w myfile.txt
+
+** du **
+Befehl um Dateigroesse auszugeben (disk usage)
+
+    1. Dateigroesse(n) des aktuellen Verzeichnisses ausgeben: du (optional mit 
+    -h um die Groesse in Kilobyte anzugeben)
+
+    2. Aktuelles Verzeichnis zusammenfassen: du -s (mit h sehr angenehm um in MB 
+    / GB anzugeben)
+
+    3. Letzte Modifikation ausgeben: du --time
+
+
+** file ** 
+Befehl um den Dateityp einer Datei auszugeben
+
+
+
+
+
+
+
+** Teilaufgabe 2: ls /bin | grep set ** 
+
+Dieser Befehl gibt alle Dateien im /bin verzeichnis aus, deren Dateiname "set" 
+beinhaltet
+
+
+** Teilaufgabe 3: Shellskript, um alle Dateien im aktuellen Verzeichnis > 500kb 
+sind auszugeben. Dafuer wird der find-Befehl verwendet:
+
+find . -maxdepth 1 -type f -size +500k
+
+Folgende Optionen werden verwendet:
+
+    1. "." um das aktuelle Verzeichnis zu durchsuchen
+    2. "-maxdepth 1" um die Suche auf die Ebene des aktuellen Verzeichnisses zu 
+    beschraenken
+    3. "-type f" um nur Dateien auszugeben (keine Verzeichnisse)
+    4. "-size +500k" um Dateien groesser als 500kb auszugeben
+
+Dieser Befehl wird in das Skript "largefiles.sh" eingegeben und das Skript 
+entsprechend berechtigt:
+
+
+    chmod +x largefiles.sh
+
+Nun kann das Skript mit folgendem Befehl ausgefuehrt werden:
+./largefiles.sh oder bash largefiles.sh
+
+
+(Advanced Skript)
+Um die User Experience zu verbessern, koennen noch Konsolenausgaben mit echo 
+ausgegeben werden, um im Fall, dass keine Dateien gefunden werden, trotzdem eine 
+Ausgabe zu liefern.
+
+Dafuer wird das Skript wie folgt modifiziert:
+
+
+Zuerst geben wir aus, dass nun eine Liste an Dateien groesser 500kb folgt.
+
+>echo "Listing all files bigger than 500kb in the current directory..."
+
+Danach fuehren wir den Find-Befehl nicht direkt aus, sondern vergeben eine 
+Variable (mit dem Dollar Zeichen werden Variablen vergebeb, die Klammer um den 
+Befehl erlaubt es, den Rueckkgabewert des Befehls als Variable zu erfassen)
+
+> result=$(find . -maxdepth 1 -type f -size +500k)
+
+
+Nun fuehren wir eine IF-Abfrage durch. Gibt es ein Ergebnis (-n fuer not empty) 
+dann geben wir dieses aus, andernfalls geben wir "No files found" aus, um dem 
+Benutzer die erfolgreiche Ausfuehrung des Skripts zu bestaetigen.
+
+> if [ -n "$result" ]; then
+    echo "$result"
+> else
+    echo "No files found"
+> fi
+
+(Das fi beendet die IF-Abfrage) 
+
+
+
+
