@@ -62,10 +62,34 @@ Befehl um Dateigroesse auszugeben (disk usage)
 ** file ** 
 Befehl um den Dateityp einer Datei auszugeben
 
+    1. Dateityp von README.md ausgeben: file README.md
 
 
+** grep **
+Befehl, um Textmuster in Dateien bzw. Ausgaben zu finden
 
+    1. Vorkommen von HFU in README.MD finden: grep "hfu" readme.md
+    2. Alle Dateien mit der Dateiendung .md finden: ls -l | grep ".md"
 
+** cat **
+Befehl, um den Inhalt von Dateien im Terminal auszugeben
+
+    1. Inhalt von README.md ausgeben: cat README.md
+    2. Inhalt von README.md mit Zeilenangaben ausgeben: cat -n README.md
+
+** scp **
+Befehl, um Dateien via Secure File Copy von A nach B zu kopieren.
+
+    1. Die README.md im lokalen Verzeichnis auf den einen ubuntu-server kopieren:
+    scp README.md user@server.com:/home/user
+    2. Die README.MD im lokalen Verzeichnis mit SSH-Key auf einen ubuntu-server kopieren:
+    scp -i .ssh/my-key-file README.md user@server.com:/home/user
+
+** sudo **
+Befehl um Befehle als superuser (su) oder anderer Benutzer auszuführen
+
+    1. Sich als root-benutzer anmelden: sudo su
+    2. Einen Befehl mit root-Berechtigungen ausführen: sudo apt-get update
 
 
 ** Teilaufgabe 2: ls /bin | grep set ** 
