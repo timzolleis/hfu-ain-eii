@@ -1,2 +1,6 @@
 .idea
 h2-data/*.db
+tasks/*/*/out/*.aux
+tasks/*/*/out/*.log
+tasks/*/*/out/*.out
+tasks/*/*/out/*.pdf

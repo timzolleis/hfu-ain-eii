@@ -1,0 +1,12 @@
+services:
+  compile:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./tasks:/tasks
+
+
+volumes:
+  miktex-packages:
+    driver: local

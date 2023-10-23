@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the directory to search for .tex files
-directory="tasks"
+directory="/tasks"
 
 # Use 'find' to locate all .tex files in the specified directory and subdirectories
 find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file; do
@@ -15,7 +15,7 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
     echo "Compiling $file..."
     SECONDS=0
     # Compile the .tex file to PDF using 'pdflatex'
-    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")" > /dev/null 2>&1
+    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
     # Return to the original directory
     echo "Successfully compiled $file - took $SECONDS seconds"
     cd - || exit 1
