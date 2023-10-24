@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./tasks:/tasks
+      - ./documentation:/documentation
 
 
 volumes:
