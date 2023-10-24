@@ -92,6 +92,12 @@ Befehl um Befehle als superuser (su) oder anderer Benutzer auszuführen
     2. Einen Befehl mit root-Berechtigungen ausführen: sudo apt-get update
 
 
+=== Nuetzliche Befehle" ===
+    1. cat, um den Inhalt von Dateien (z.B docker-compose oder eines einzeilers) direkt auszugeben
+    2. ls, um sich einen Ueberblick ueber die Dateien im aktuellen Verzeichnis zu verschaffen
+
+
+
 ** Teilaufgabe 2: ls /bin | grep set ** 
 
 Dieser Befehl gibt alle Dateien im /bin verzeichnis aus, deren Dateiname "set" 
