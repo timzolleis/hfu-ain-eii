@@ -20,8 +20,8 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
     SECONDS=0
     mkdir -p out
     # This command runs two times to ensure references are correct
-    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")" > /dev/null
-    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")" > /dev/null
+    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
+    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
     echo "Successfully compiled $file - took $SECONDS seconds"
     echo "Copying files..."
     start_time=$(date +%s%N)
