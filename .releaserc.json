@@ -1,0 +1,23 @@
+{
+  "release": {
+    "branches": [
+      "master"
+    ]
+  },
+  "repositoryUrl": "https://github.com/timzolleis/hfu-ain-eii.git",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "artifacts/documentation",
+            "label": "Documentation files"
+          }
+        ]
+      }
+    ]
+  ]
+}
