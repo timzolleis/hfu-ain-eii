@@ -11,9 +11,10 @@ if [ -n "$2" ]; then
 fi
 find "$directory" -type f -name "*.tex" -print0 | xargs -0 -I {} echo "Found files: {}"
 
+echo "Creating target directory"
+mkdir -p "$outDirectory"
 find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file; do
     dir="$(dirname "$file")"
-
     cd "$dir" || exit 1
        echo "Changing context to $dir"
     echo "Compiling $file..."
