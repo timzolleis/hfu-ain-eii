@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@master
         with:
             fetch-tags: true
+            fetch-depth: 0
       - name: Install TeX distribution
         uses: teatimeguest/setup-texlive-action@v3
         with:
