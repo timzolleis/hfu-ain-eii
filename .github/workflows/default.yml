@@ -58,11 +58,6 @@ jobs:
     needs: create-zip-file
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@master
-        with:
-          name: documentation-zipped
-          path: artifacts/documentation.zip
       - name: Setup NPM
         uses: actions/setup-node@master
         with:
@@ -71,6 +66,11 @@ jobs:
         run: npm install -g semantic-release @semantic-release/gitlab @semantic-release/git
       - name: Checkout repository
         uses: actions/checkout@master
+      - name: Download artifacts
+        uses: actions/download-artifact@master
+        with:
+          name: documentation-zipped
+          path: artifacts/documentation.zip
       - name: Create version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
