@@ -36,7 +36,7 @@ jobs:
   
 
   create-version:
-    needs: compile-latex-file
+    needs: compile-latex-files
     runs-on: ubuntu-latest
     steps:
       - name: Setup NPM
