@@ -1,12 +1,12 @@
 services:
   compile:
+    container_name: compile
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - ./tasks:/tasks
       - ./documentation:/documentation
-
 
 volumes:
   miktex-packages:
