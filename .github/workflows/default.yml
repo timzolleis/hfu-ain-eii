@@ -12,10 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
       - name: Install TeX distribution
-        uses: zauguin/install-texlive@v2
+      - uses: teatimeguest/setup-texlive-action@v3
         with:
-          packages: >
-            l3build latex latex-bin luatex babel ngerman ucs graphicx hyperref fontenc inputenc
+          packages: >-
+            scheme-basic
+            cleveref
+            hyperref
+            babel
+            ngerman
+            ucs
+            graphicx
+            fontenc
+            inputenc
       - name: Compile files
         run: |
           chmod +x ./compile-files.sh
