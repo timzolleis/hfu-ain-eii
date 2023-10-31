@@ -1,8 +1,14 @@
 #!/bin/bash
 
 directory="/tasks"
-outDirectory="/documentation"
+if [ -n "$1" ]; then
+  directory="$1"
+fi
 
+outDirectory="/documentation"
+if [ -n "$2" ]; then
+  outDirectory="$2"
+fi
 find "$directory" -type f -name "*.tex" -print0 | xargs -0 -I {} echo "Found files: {}"
 
 find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file; do

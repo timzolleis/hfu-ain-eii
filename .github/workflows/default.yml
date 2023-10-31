@@ -1,0 +1,45 @@
+name: "Compile files + create version"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  compile-latex-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Install TeX distribution
+        uses: zauguin/install-texlive@v2
+        with:
+          packages: >
+            l3build latex latex-bin luatex babel ngerman ucs graphicx hyperref fontenc inputenc
+      - name: Compile files
+        run: |
+          chmod +x ./compile-files.sh
+          ./compile-files.sh
+      - name: Create artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: documentation
+          path: |
+            ./documentation
+
+    create-version:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download artifacts
+          uses: actions/download-artifact@master
+          with:
+            name: documentation
+            path: artifacts/documentation
+        - name: Setup NPM
+          uses: actions/setup-node@master
+          with:
+            node-version: 18
+        - name: Install dependencies
+          run: npm ci
+        - name: Create version
+          run: npx semantic-release
