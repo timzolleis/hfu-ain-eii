@@ -16,7 +16,7 @@ echo "Created output directory. Contents of workdir"
 ls -la
 
 latestTag=$(git describe --tags --abbrev=0)
-changedFiles=$(git diff --no-commit-id --name-only -r  "$latestTag..HEAD" | grep '\.tex$')
+changedFiles=$(git diff --no-commit-id --name-only -r --diff-filter=ACMRTUXB  "$latestTag..HEAD" | grep '\.tex$')
 
 
 if [ -z "$changedFiles" ]; then
