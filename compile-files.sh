@@ -25,7 +25,7 @@ if [ -z "$changedFiles" ]; then
 fi
 
 echo "Changed files $changedFiles"
-
+workdir_path=$(pwd)
 # Find and compile only modified .tex files
  for file in $changedFiles; do
   dir="$(dirname "$file")"
@@ -49,8 +49,8 @@ echo "Changed files $changedFiles"
     echo "Moving file..."
     parentDir="$(basename "$(dirname "$dir")")"
     newFileName="$parentDir"_"$(basename "$dir")"
-    mv out/"$(basename "$fileName" .tex)".pdf "$workdir/dist/$newFileName".pdf
-    echo "Successfully copied file to $workdir/dist/$newFileName.pdf "
+    mv out/"$(basename "$fileName" .tex)".pdf "$workdir_path/dist/$newFileName".pdf
+    echo "Successfully copied file to $workdir_path/dist/$newFileName.pdf "
   else
     echo "Failed to compile $fileName"
     echo "Logging logs..."
