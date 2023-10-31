@@ -27,7 +27,10 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
     compile_total_time=$(( (compile_end_time - compile_start_time) / 1000000 ))
     # Check if the file is present and if it is move it
     if [ -f out/"$(basename "$file" .tex)".pdf ]; then
+
       echo "Successfully compiled $file in ${compile_total_time} ms"
+      echo "Contents of out directory:"
+      ls -la
       echo "Moving file..."
       parentDir="$(basename "$(dirname "$dir")")"
       newFileName="$parentDir"_"$(basename "$dir")"
