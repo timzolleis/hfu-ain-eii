@@ -8,6 +8,11 @@ on:
 jobs:
   check-commit-message:
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+        with:
+          fetch-tags: true
+          fetch-depth: 0
       - name: Check commit message
         outputs:
           alive: ${{ steps.check.outputs.run_workflow }}
