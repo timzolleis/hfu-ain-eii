@@ -48,6 +48,6 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
-        run: npm ci
+        run: npm install -g semantic-release @semantic-release/gitlab @semantic-release/git
       - name: Create version
         run: npx semantic-release
