@@ -26,8 +26,8 @@ jobs:
             inputenc
       - name: Compile files
         run: |
-          chmod +x ./compile-files.sh ./tasks ./documentation
-          ./compile-files.sh
+          chmod +x ./compile-files.sh
+          ./compile-files.sh ./tasks ./documentation
       - name: Create artifacts
         uses: actions/upload-artifact@master
         with:
