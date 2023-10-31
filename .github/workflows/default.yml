@@ -26,13 +26,13 @@ jobs:
       - name: Compile files
         run: |
           chmod +x ./compile-files.sh
-          ./compile-files.sh ./tasks ./documentation
+          ./compile-files.sh ./tasks /artifacts/documentation
       - name: Create artifacts
         uses: actions/upload-artifact@master
         with:
           name: documentation
           path: |
-            ./documentation
+            /artifacts/documentation
 
   create-version:
     needs: compile-latex-files
