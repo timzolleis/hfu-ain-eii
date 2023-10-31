@@ -17,26 +17,26 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
     cd "$dir" || exit 1
        echo "Changing context to $dir"
     echo "Compiling $file..."
-    SECONDS=0
     mkdir -p out
+    compile_start_time=$(date +%s%N)
     # This command runs two times to ensure references are correct
     pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
     pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
-    # Check if the file is present
-    if [ ! -f out/"$(basename "$file" .tex)".pdf ]; then
-        echo "Failed to compile $file"
-        echo "Logging logs..."
-        cat out/"$(basename "$file" .tex)".log
-        exit 1
+    compile_end_time=$(date +%s%N)
+    compile_total_time=$(( (compile_end_time - compile_start_time) / 1000000 ))
+    # Check if the file is present and if it is move it
+    if [ -f out/"$(basename "$file" .tex)".pdf ]; then
+      echo "Successfully compiled $file in ${compile_total_time} ms"
+      echo "Moving file..."
+      parentDir="$(basename "$(dirname "$dir")")"
+      newFileName="$parentDir"_"$(basename "$dir")"
+      mv out/"$(basename "$file" .tex)".pdf "$outDirectory/$newFileName".pdf
+      echo "Successfully copied file to $outDirectory/$newFileName.pdf "
+      cd - || exit 1
+    else
+      echo "Failed to compile $file"
+      echo "Logging logs..."
+      cat out/"$(basename "$file" .tex)".log
+      exit 1
     fi
-    echo "Successfully compiled $file - took $SECONDS seconds"
-    echo "Copying files..."
-    start_time=$(date +%s%N)
-    parentDir="$(basename "$(dirname "$dir")")"
-    newFileName="$parentDir"_"$(basename "$dir")"
-    mv out/"$(basename "$file" .tex)".pdf "$outDirectory/$newFileName".pdf
-    end_time=$(date +%s%N)
-    elapsed_time=$(( (end_time - start_time) / 1000000 ))
-    echo "Successfully copied file to $outDirectory/$newFileName.pdf - took ${elapsed_time} ms"
-    cd - || exit 1
 done
