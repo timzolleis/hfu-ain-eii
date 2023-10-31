@@ -10,7 +10,10 @@ echo "Creating output directory"
 mkdir -p "$workdir/dist"
 
 
+
 cd "$workdir" || exit 1
+echo "Created output directory. Contents of workdir"
+ls -la
 
 latestTag=$(git describe --tags --abbrev=0)
 changedFiles=$(git diff --no-commit-id --name-only -r  "$latestTag..HEAD" | grep '\.tex$')
