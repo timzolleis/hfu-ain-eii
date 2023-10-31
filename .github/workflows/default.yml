@@ -35,25 +35,6 @@ jobs:
             ./documentation
   
 
-  create-zip-file:
-    needs: compile-latex-files
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@master
-        with:
-          name: documentation
-          path: artifacts/documentation
-      - name: Create zip file
-        run: |
-          zip -r documentation.zip artifacts/documentation
-      - name: Create artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: documentation-zipped
-          path: documentation.zip
-
-
   create-version:
     needs: create-zip-file
     runs-on: ubuntu-latest
@@ -69,8 +50,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@master
         with:
-          name: documentation-zipped
-          path: documentation.zip
+          name: documentation
+          path: documentation
       - name: Create version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
