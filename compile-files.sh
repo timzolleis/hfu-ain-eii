@@ -22,6 +22,13 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
     # This command runs two times to ensure references are correct
     pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
     pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
+    # Check if the file is present
+    if [ ! -f out/"$(basename "$file" .tex)".pdf ]; then
+        echo "Failed to compile $file"
+        echo "Logging logs..."
+        cat out/"$(basename "$file" .tex)".log
+        exit 1
+    fi
     echo "Successfully compiled $file - took $SECONDS seconds"
     echo "Copying files..."
     start_time=$(date +%s%N)
