@@ -1,9 +1,7 @@
 {
-  "release": {
-    "branches": [
-      "master"
-    ]
-  },
+  "branches": [
+    "master"
+  ],
   "repositoryUrl": "https://github.com/timzolleis/hfu-ain-eii",
   "plugins": [
     "@semantic-release/commit-analyzer",
