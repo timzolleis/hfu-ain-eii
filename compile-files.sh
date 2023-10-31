@@ -34,7 +34,7 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
       echo "Moving file..."
       parentDir="$(basename "$(dirname "$dir")")"
       newFileName="$parentDir"_"$(basename "$dir")"
-      mv out/"$(basename "$file" .tex)".pdf "$outDirectory/$newFileName".pdf
+      mv out/"$(basename "$file" .tex)".pdf "../../../$outDirectory/$newFileName".pdf
       echo "Successfully copied file to $outDirectory/$newFileName.pdf "
       cd - || exit 1
     else
