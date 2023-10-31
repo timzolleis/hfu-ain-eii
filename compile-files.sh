@@ -1,46 +1,58 @@
 #!/bin/bash
 
-directory="/tasks"
+workdir="/workdir"
 if [ -n "$1" ]; then
-  directory="$1"
+  workdir="$1"
 fi
 
-outDirectory="/documentation"
-if [ -n "$2" ]; then
-  outDirectory="$2"
+
+echo "Creating output directory"
+mkdir -p "$workdir/dist"
+
+
+cd "$workdir" || exit 1
+
+latestTag=$(git describe --tags --abbrev=0)
+changedFiles=$(git diff --no-commit-id --name-only -r  "$latestTag..HEAD" | grep '\.tex$')
+
+
+if [ -z "$changedFiles" ]; then
+  echo "Nothing to compile..."
+  exit 0
 fi
-find "$directory" -type f -name "*.tex" -print0 | xargs -0 -I {} echo "Found files: {}"
 
-echo "Creating target directory"
-mkdir -p "$outDirectory"
-find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file; do
-    dir="$(dirname "$file")"
-    cd "$dir" || exit 1
-       echo "Changing context to $dir"
-    echo "Compiling $file..."
-    mkdir -p out
-    compile_start_time=$(date +%s%N)
-    # This command runs two times to ensure references are correct
-    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
-    pdflatex -interaction=batchmode -output-directory out "$(basename "$file")"
-    compile_end_time=$(date +%s%N)
-    compile_total_time=$(( (compile_end_time - compile_start_time) / 1000000 ))
-    # Check if the file is present and if it is move it
-    if [ -f out/"$(basename "$file" .tex)".pdf ]; then
+echo "Changed files $changedFiles"
 
-      echo "Successfully compiled $file in ${compile_total_time} ms"
-      echo "Contents of out directory:"
-      ls -la out
-      echo "Moving file..."
-      parentDir="$(basename "$(dirname "$dir")")"
-      newFileName="$parentDir"_"$(basename "$dir")"
-      mv out/"$(basename "$file" .tex)".pdf "../../../$outDirectory/$newFileName".pdf
-      echo "Successfully copied file to $outDirectory/$newFileName.pdf "
-      cd - || exit 1
-    else
-      echo "Failed to compile $file"
-      echo "Logging logs..."
-      cat out/"$(basename "$file" .tex)".log
-      exit 1
-    fi
+# Find and compile only modified .tex files
+ for file in $changedFiles; do
+  dir="$(dirname "$file")"
+  echo "Changing context to $dir"
+  cd "$dir" || exit 1
+  fileName="$(basename "$file")"
+
+  echo "Compiling $fileName..."
+  mkdir -p out
+  compile_start_time=$(date +%s%N)
+  # This command runs two times to ensure references are correct
+  pdflatex -interaction=batchmode -output-directory out "$fileName"
+  pdflatex -interaction=batchmode -output-directory out "$fileName"
+  compile_end_time=$(date +%s%N)
+  compile_total_time=$(( (compile_end_time - compile_start_time) / 1000000 ))
+  # Check if the file is present and if it is, move it
+  if [ -f out/"$(basename "$fileName" .tex)".pdf ]; then
+    echo "Successfully compiled $fileName in ${compile_total_time} ms"
+    echo "Contents of out directory:"
+    ls -la out
+    echo "Moving file..."
+    parentDir="$(basename "$(dirname "$dir")")"
+    newFileName="$parentDir"_"$(basename "$dir")"
+    mv out/"$(basename "$fileName" .tex)".pdf "$workdir/dist/$newFileName".pdf
+    echo "Successfully copied file to $workdir/dist/$newFileName.pdf "
+  else
+    echo "Failed to compile $fileName"
+    echo "Logging logs..."
+    cat out/"$(basename "$fileName" .tex)".log
+    exit 1
+  fi
+  cd - || exit 1
 done

@@ -5,8 +5,10 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./tasks:/tasks
+      - ./documentation:/workdir/dist
+      - ./tasks:/workdir/tasks
       - ./documentation:/documentation
+      - ./.git:/workdir/.git
 
 volumes:
   miktex-packages:
