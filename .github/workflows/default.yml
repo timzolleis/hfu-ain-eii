@@ -8,6 +8,8 @@ on:
 jobs:
   check-commit-message:
     runs-on: ubuntu-latest
+    outputs:
+      alive: ${{ steps.check.outputs.run_workflow }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
@@ -15,8 +17,6 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
       - name: Check commit message
-        outputs:
-          alive: ${{ steps.check.outputs.run_workflow }}
         run: |
           commit_message="$(git log -1 --pretty=%B)"
           if [[ $commit_message == *"fix"* || $commit_message == *"feat"* ]]; then
