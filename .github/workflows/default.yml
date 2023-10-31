@@ -22,6 +22,7 @@ jobs:
             ucs
             graphicx
             hyperref
+            etoolbox
       - name: Compile files
         run: |
           chmod +x ./compile-files.sh
