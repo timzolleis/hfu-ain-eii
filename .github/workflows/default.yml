@@ -15,15 +15,13 @@ jobs:
         uses: teatimeguest/setup-texlive-action@v3
         with:
           packages: >-
-            scheme-full
-            cleveref
-            hyperref
+            scheme-basic
             babel
-            ngerman
+            babel-german
+            fontenc
             ucs
             graphicx
-            fontenc
-            inputenc
+            hyperref
       - name: Compile files
         run: |
           chmod +x ./compile-files.sh
