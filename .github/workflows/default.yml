@@ -27,19 +27,19 @@ jobs:
           path: |
             ./documentation
 
-    create-version:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Download artifacts
-          uses: actions/download-artifact@master
-          with:
-            name: documentation
-            path: artifacts/documentation
-        - name: Setup NPM
-          uses: actions/setup-node@master
-          with:
-            node-version: 18
-        - name: Install dependencies
-          run: npm ci
-        - name: Create version
-          run: npx semantic-release
+  create-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@master
+        with:
+          name: documentation
+          path: artifacts/documentation
+      - name: Setup NPM
+        uses: actions/setup-node@master
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Create version
+        run: npx semantic-release
