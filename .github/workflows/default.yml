@@ -70,7 +70,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: documentation-zipped
-          path: artifacts/documentation.zip
+          path: documentation.zip
       - name: Create version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
