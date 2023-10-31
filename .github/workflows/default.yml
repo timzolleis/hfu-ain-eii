@@ -46,9 +46,11 @@ jobs:
       - name: Setup NPM
         uses: actions/setup-node@master
         with:
-          node-version: "lts/*"
+          node-version: "18"
       - name: Install dependencies
         run: npm install -g semantic-release @semantic-release/gitlab @semantic-release/git
+      - name: Checkout repository
+        uses: actions/checkout@master
       - name: Create version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
