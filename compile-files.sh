@@ -30,7 +30,7 @@ find "$directory" -type f -name "*.tex" -print0 | while IFS= read -r -d '' file;
 
       echo "Successfully compiled $file in ${compile_total_time} ms"
       echo "Contents of out directory:"
-      ls -la
+      ls -la out
       echo "Moving file..."
       parentDir="$(basename "$(dirname "$dir")")"
       newFileName="$parentDir"_"$(basename "$dir")"
