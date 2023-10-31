@@ -10,8 +10,8 @@
       {
         "assets": [
           {
-            "path": "artifacts/documentation",
-            "label": "Documentation files"
+            "path": "artifacts/documentation.zip",
+            "label": "PDF Files"
           }
         ]
       }
