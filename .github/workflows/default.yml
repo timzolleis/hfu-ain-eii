@@ -46,8 +46,6 @@ jobs:
           path: artifacts/documentation
       - name: Create zip file
         run: |
-          sudo apt-get update && sudo apt-get install -y zip
-          cd artifacts
           zip -r documentation.zip artifacts/documentation
       - name: Create artifacts
         uses: actions/upload-artifact@master
