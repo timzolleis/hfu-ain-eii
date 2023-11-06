@@ -9,7 +9,7 @@ jobs:
   check-commit-message:
     runs-on: ubuntu-latest
     outputs:
-      alive: ${{ steps.check.outputs.run_workflow }}
+      run_workflow: ${{ steps.check-message.outputs.run_workflow }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
@@ -17,27 +17,30 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
       - name: Check commit message
+        id: check-message
         run: |
           commit_message="$(git log -1 --pretty=%B)"
           if [[ $commit_message == *"fix"* || $commit_message == *"feat"* ]]; then
-          echo echo "run_workflow=true" >> $GITHUB_OUTPUT
+          echo "run_workflow=true" >> $GITHUB_OUTPUT
+          echo "Should run "
           else
-          echo echo "run_workflow=false" >> $GITHUB_OUTPUT
+          echo "run_workflow=false" >> $GITHUB_OUTPUT
+          echo "Skipping workflow"
           fi
 
 
   compile-latex-files:
-    needs: check-commit-message
     if: ${{ needs.check-commit-message.outputs.run_workflow == 'true' }}
+    needs: check-commit-message
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@master
         with:
           fetch-tags: true
           fetch-depth: 0
       - name: Install TeX distribution
-        if: steps.check_commit_message.outputs.run_workflow == 'true'
         uses: teatimeguest/setup-texlive-action@v3
         with:
           packages: >-
@@ -50,12 +53,10 @@ jobs:
             hyperref
             etoolbox
       - name: Compile files
-        if: steps.check_commit_message.outputs.run_workflow == 'true'
         run: |
           chmod +x ./compile-files.sh
           ./compile-files.sh .
       - name: Create artifacts
-        if: steps.check_commit_message.outputs.run_workflow == 'true'
         uses: actions/upload-artifact@master
         with:
           name: documentation
@@ -64,7 +65,6 @@ jobs:
   
 
   create-version:
-
     if: ${{ needs.check-commit-message.outputs.run_workflow == 'true' }}
     needs: compile-latex-files
     runs-on: ubuntu-latest
