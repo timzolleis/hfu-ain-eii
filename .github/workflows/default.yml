@@ -27,6 +27,7 @@ jobs:
 
 
   compile-latex-files:
+    needs: check-commit-message
     if: ${{ needs.check-commit-message.outputs.run_workflow == 'true' }}
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +64,7 @@ jobs:
   
 
   create-version:
+
     if: ${{ needs.check-commit-message.outputs.run_workflow == 'true' }}
     needs: compile-latex-files
     runs-on: ubuntu-latest
