@@ -133,7 +133,7 @@
 
     \noindent \textbf{Hexadezimal}: Da hier (wie zu Beginn beschrieben) die Zahl als Faktor $16^n$ beschrieben wird, setzt sich die gr"oßte mit 4-Bit darstellbare Zahl wie folgt zusammen: $(15 * 16^3) + (15 * 16^2) + (15 * 16^1) + (15 * 16^0)$ \\ \\
     \noindent \textbf{Bin"ar}: Da im Bin"arsystem die jeweiligen Zahlen als $2^n$ beschrieben werden, setzt sich die gr"oßte mit 4-Bit darstellbare Zahl einfach aus vier Einsen zusammen: 1111 \\ \\
-    \noindent \textbf{Oktal}: Das Oktalsystem verh"alt sich gleich wie das Hexadezimalsystem, jedoch nur zur Basis 8 (hier k"onnen Zahlen von 0-7 als Faktor verwendet werden). Die gr"oßtm"ogliche 4-Bit Zahl w"are somit $(7 * 8^3) + (7 * 8^2) + (7 * 8^1) + (7 * 8^0)$) \\ \\
+    \noindent \textbf{Oktal}: Das Oktalsystem verh"alt sich gleich wie das Hexadezimalsystem, jedoch nur zur Basis 8 (hier k"onnen Zahlen von 0-7 als Faktor verwendet werden). Die gr"oßtm"ogliche 4-Bit Zahl w"are somit $(7 * 8^3) + (7 * 8^2) + (7 * 8^1) + (7 * 8^0)$ \\ \\
 
     \subsection{L"osung}
 
@@ -173,8 +173,9 @@
             Dualsystem        & Oktalsystem & Hexadezimalsystem \\
             101101.101        & 55.5        & 2D.A              \\
             10101011.11001101 & 253.632     & AB.CD             \\
-        \end{tabular}
+        \end{tabular}\label{tab:table}
     \end{table}
+    \\ \\
 
     \noindent \textbf{Disclaimer}: Da hier nicht klar war, ob die umgerechneten Zahlen wieder zu begrenzen sind (z.B auf 8 Bit total) wurde bei der letzten Umrechnung einfach das Äquivalent der Zahl ohne Beachtung der Bitlänge angegeben.
 
@@ -185,17 +186,12 @@
     Zun"achst sollen Dezimalzahlen in das Bin"arsystem umgewandelt und dann miteinander addiert / voneinander subtrahiert werden. Hierbei sind jedoch die Besonderheiten der Verrechnung zweier Bin"arzahlen zu beachten
 
     \subsection{L"osungskonzept}
-    Zun"achst wurden die Besonderheiten der Bin"arrechnung visualisiert:
-
-    \begin{enumerate}
-        \item Es muss von Rechts nach Links gerechnet werden
-        \item 0 - 0 subtrahiert bleibt 0
-        \item 1 - 0 subtrahiert bleibt 1
-        \item 1 - 1 subtrahiert ergibt 0
-        \item 0 - 1 subtrahiert ergibt 0, wobei eine 1 "ubertragen und von der n"achsten Zahl subtrahiert wird
-    \end{enumerate}
-
-    Danach kann jede Dezimalzahl mit den in Aufgabe 1 erlernten Techniken in eine Bin"arzahl umgerechnet werden
+    Bei der Bin"arrechnung sind folgende Regeln zu beachten:
+    \begin{itemize}
+        \item Bei der Additionsrechnung werden die beiden Zahlen untereinander geschrieben und dann die Zahlen addiert. Im Falle 1 + 1 wird die Zahl (von rechts nach links gehend) "ubertragen.
+        \item Bei der Subtraktion müssen die Zahlen zunächst auf 8-Bit erweitert werden. Die zu subtrahierden Zahl wird in ihr Zweierkomplement umgewandelt (sprich die negative Repr"asentation) und dann addiert.
+    \end{itemize}
+    Danach kann jede Dezimalzahl mit den in Aufgabe 1 erlernten Techniken in eine Bin"arzahl umgerechnet und entsprechend verrechnet werden
 
     \subsection{Konkrete L"osung}
 
@@ -208,8 +204,22 @@
         \item 42 - 12 = 00101010 - 00001100
         \item 18 - 105 = 00010010 - 01101001
     \end{enumerate}
-
+    \\ \\
     \noindent \textbf{Berechnung}
+    \\ \\
+    \noindent \textbf{Zweierkomplement - Beispiel}
+    Um die Subtraktion zu vereinfachen wird die zu subtrahierende Zahl in ihr Zweierkomplement umgewandelt.
+    \begin{enumerate}
+        \item Die Bin"arrepr"asentation wird invertiert (0 wird zu 1 und 1 wird zu 0)
+        \item 1 wird addiert
+        \item Beispiel: 55-120
+        \subitem 55 kann als 00110111 dargestellt werden und stehen gelassen werden
+        \subitem 120 kann als 01111000 dargestellt werden, wird aber in das Zweierkomplement umgewandelt: 10001000
+    \end{enumerate}
+
+    \subsubsection{Disclaimer}
+    Die Nachfolgenden Subtraktionen wurden nach dem oben beschriebenen Schema durchgef"uhrt. Um das Lesen der Ergebnisse zu vereinfachen, wurde bei negativen Ergebnissen wieder das Zweierkomplement gebildet (nach gleichem Schema) um die positive Repr"asentation der Zahl zu erhalten (sprich 65 statt 191)
+    Um die Negativit"at der Zahl zu kennzeichnen, wurde ein Minuszeichen vor die Zahl gesetzt. Dies ist ist bei einer bin"aren Schreibweise normalerweise \textbf{nicht} der Fall.
     \begin{enumerate}
         \item 125 + 199 = 01111101 + 11000111 = 0101000100 = 324
         \item 27 + 30 = 00011011 + 00011110 = 00111001 = 57
@@ -218,6 +228,8 @@
         \item 42 - 12 = 00101010 - 00001100 = 00011110 = 30
         \item 18 - 105 = 00010010 - 01101001 = -01001011 = -75
     \end{enumerate}
+    \\
+
 
     Hier ist es n"otig, die 8-Bit Begrenzung aufgrund des "Ubertrags zu beachten, da sonst die Subtraktion unter umst"anden falsche Ergebnisse liefert.
 
