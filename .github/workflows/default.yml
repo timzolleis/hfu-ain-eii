@@ -44,6 +44,7 @@ jobs:
         uses: teatimeguest/setup-texlive-action@v3
         with:
           packages: >-
+            listings
             scheme-basic
             babel
             babel-german
