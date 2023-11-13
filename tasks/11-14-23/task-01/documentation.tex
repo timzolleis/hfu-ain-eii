@@ -1,0 +1,163 @@
+\documentclass[a4paper,11pt,titlepage]{article}
+
+\usepackage{ucs}
+\usepackage[german,ngerman]{babel}
+\usepackage{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{listing}
+\usepackage[pdftex]{hyperref}
+
+\begin{document}
+
+% hier aktuelle Uebungsnummer einfuegen
+    \title{Einf\"uhrung in die Informatik\\
+    Ausarbeitung \"Ubung 3}
+
+% Namen der Bearbeiter einfuegen
+
+    \author{Tim Zolleis}
+
+% aktuelles Datum einfuegen
+
+    \date{\today}
+
+    \maketitle{\thispagestyle{plain}}
+
+
+    \section{Aufgabe 1 - Compile und Debug}
+
+    \subsection{Problem: Kompilieren und Debuggen mit ggc / g++ / gdb}
+    In der folgenden Aufgabe m"ussen zum einen
+    \begin{enumerate}
+        \item Die Parameter für gcc zum Kompilieren von C/C++ Programmen ermittelt werden
+        \item Die Unterschiede zwischen gcc und g++ erkannt werden
+        \item Die Verwendung von gdb zum Debuggen von C/C++ Programmen analysiert werden (mit Nutzung von gcc / g++)
+    \end{enumerate}
+
+    \subsection{L"osungskonzept}
+    Zun"achst wird die Man-Page von gcc aufgerufen um mehr "uber die m"oglichen Parameter zu lernen:
+    \begin{enumerate}
+        \item Standardm"aßig wird der Pr"aprozessor, der Compiler, der Assembler und der Linker aufgerufen, wobei dann ein "fertiges", aufrufbares Programm als Ausgabe erstellt wird.
+        \item Der Linker kann mit der Option \textbf{-c} nicht aufgerufen werden.
+        \item Mit \textbf{-o} kann die zu erstellende Datei (anstatt "a.out") angeben werden (z.B euclid.out)
+        \item Die Option \textbf{-g} erm"oglicht die Benutzung eines Debuggers. Dabei wird die Debug-Information im jeweiligen Standard des Betriebssystems, auf welchem gcc aufgerufen wurde, erstellt.
+        \item Mit \textbf{-W} k"onnen Warnungen (falls vorhanden ausgegeben werden)
+    \end{enumerate}
+
+    \subsection{konkrete L"osung}
+    Zun"achst wird das C++ Programm (Algorithmus des Euklid) geschrieben \\
+    \begin{listing}
+        #include <cstdio>
+
+        int euclid(int a, int b){
+            if(a == 0){
+                return b;
+            }
+            return euclid(b % a, a);
+        }
+        int main(){
+            int numberA;
+            int numberB;
+            printf("Please enter a number A \n");
+            scanf("%i", &numberA);
+            printf("Please enter a number B \n");
+            scanf("%i", &numberB);
+
+            int res = euclid(numberA, numberB);
+            printf("Result: %i \n", res);
+            return 0;
+        }
+    \end{listing}
+
+    Dieses Programm akzeptiert zwei Ganzzahlen (A und B) als Parameter und ermittelt rekursiv den kleinsten gemeinsamen Teiler.
+
+    \subsubsection*{Kompilieren und Ausf"uhren}
+    Um das Programm auszuf"uhren, kann es mit g++ kompiliert, assembled und gelinkt werden: \\
+    \textbf{g++ euclidean.cpp -o euclidean.out \\
+    Ausgef"uhrt wird das Programm (unter Linux) dann einfach folgendermaßen: \textbf{./euclidean.out}
+
+    \subsubsection{Debuggen}
+    Damit das Programm entsprechend auf (eventuelle) Fehler untersucht werden kann, wird mit GDB (GNU Debugger) eine "Debugging-Session" gestartet.
+    \begin{enumerate}
+        \item Zun"achst wird das Programm mit \textbf{g++ -g euclidean.cpp -o euclidean.out} kompiliert. Dabei wird die Debug-Information mit erzeugt.
+        \item Anschlie"send wird GDB mit \textbf{gdb euclidean.out} gestartet.
+        \item Da im Folgenden die Variablen numberA und numberB ausgegeben werden sollen, kann z.B ein Breakpoint in Zeile 18 gesetzt werden: \textbf{break 18}
+        \item Mit \textbf{r} wird das Programm nun gestartet. Wenn es im Breakpoint h"angen bleibt, kann mit \textbf{p numberA} der Wert der Variable numberA ausgegeben werden.
+        \item Nun kann wahlweise Zeilenweise (mit s) oder Funktionsweise (n) weiter ausgef"uhrt werden - bzw. mit \textbf{c} bis zum n"achsten Breakpoint (oder bis zum Ende des Programms, falls kein Breakpoint existiert).
+    \end{enumerate}
+
+
+    \section{Aufgabe 2 - Make}
+
+    \subsection{Problem: Erstellen eines Makefiles um die Kompilierung zu automatisieren}
+    In der folgenden Aufgabe muss
+    \begin{enumerate}
+        \item Das Format des Makefiles ermittelt werden
+        \item Ein Makefile zur automatischen Kompilierung des Programms aus Aufgabe 1 erstellt werden
+    \end{enumerate}
+
+    \subsection{L"osungskonzept}
+    Die Struktur eines "Make" Commands ist insofern relativ simpel: \\
+    \textbf{Ziel: Abh"angigkeiten} \\
+    Sprich um z.B die .o Dateien f"ur die "euclidean.cpp" Datei zu erstellen, muss das Makefile folgenden Befehl beinhalten: \\
+    \begin{listing}
+        euclid.o: euclidean.cpp
+        g++ -c euclidean.cpp
+    \end{listing}
+    Wobei der Compiler ohne Linker aufgerufen wird und die entsprechenden .o Dateien erstellt.
+
+    Um nun ein Makefile zur Erstellung eines fertigen C++ Programmes zu erhalten, kann man die Link-Anweisung in Abh"angigkeit zur Kompilierung anf"ugen: \\
+    \begin{listing}
+        link: euclid.o
+        g++ -o euclidean euclidean.o
+    \end{listing}
+
+    Somit (mit Aufruf aller Befehle) sieht das Makefile dann folgenderma"sen aus: \\
+    \begin{listing}
+        all: link
+
+        euclid.o: euclidean.cpp
+        g++ -c euclidean.cpp
+
+        link: euclid.o
+        g++ -o euclidean euclidean.o
+    \end{listing}
+
+
+    \section{Aufgabe 3 - Cmake}
+
+    \subsection{Problem: Erstellen eines CMake Projekts}
+    In der folgenden Aufgabe ist die Struktur eines CMake Projekts (mit CMakeLists.txt) zu verstehen, sowie der Unterschied zwischen CMake und Make zu ermitteln.
+
+    Anschließend soll die Funktion des PHONY "clean" targets ermittelt werden.
+
+    \subsection{L"osungskonzept}
+
+    \subsubsection{Cmake vs Make}
+    \begin{itemize}
+        \item Make ist ein Tool f"ur Linux um Plattformabh"angig schnell Anweisungen zu automatisieren und auszuf"uhren.
+        \item Cmake ist ein Plattformunanbh"angiges Tool, um die Kompilierung, Ausf"uhrung und Debugging von Programmen zu automatisieren.
+    \end{itemize}
+
+    \subsection{konkrete L"osung}
+    Zun"achst wird eine CMakeLists.txt Datei als Anweisung für Cmake erstellt. Diese hat folgenden Inhalt:
+    \begin{listing}
+        cmake_minimum_required(VERSION 3.0)
+        project(euclidean)
+        add_executable(euclidean euclidean.cpp)
+    \end{listing}
+
+    Wird nun CMake aufgerufen (cmake .), so wird ein Makefile erstellt, welches die Kompilierung des Programms "euclidean" automatisiert. \\
+    Anschlie"send kann das Programm mit \textbf{make} kompiliert werden. \\
+
+    \subsubsection{PHONY clean}
+    Mit .PHONY kann ein Target definiert werden, welches nicht als Datei interpretiert wird, sodass Make nicht nach dieser Abh"angigkeit sucht,. In diesem Fall wird "clean" ausgef"uhrt, um alle tempor"aren Dateien zu l"oschen. (hier: CMakeFiles/MakeFile2) \\
+
+
+    \section{Resumee zur dieser "Ubungsaufgabe}
+    Dauer f"ur
+    \begin{itemize}
+        \item Durchf"uhrung: 15min
+        \item Dokumentation: 45min
+    \end{itemize}
+\end{document}
