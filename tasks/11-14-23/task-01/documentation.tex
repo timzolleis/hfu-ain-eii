@@ -4,8 +4,40 @@
 \usepackage[german,ngerman]{babel}
 \usepackage{fontenc}
 \usepackage[pdftex]{graphicx}
-\usepackage{listing}
 \usepackage[pdftex]{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95} % Very light gray
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=tlbr, % adds a frame around the code
+    framesep=5pt, % padding thickness
+    framerule=0pt % frame thickness
+}
+
+% Activate the style
+\lstset{style=mystyle}
 
 \begin{document}
 
@@ -46,7 +78,7 @@
 
     \subsection{konkrete L"osung}
     Zun"achst wird das C++ Programm (Algorithmus des Euklid) geschrieben \\
-    \begin{listing}
+    \begin{lstlisting}[language=C++, caption=euclidean.cpp]
         #include <cstdio>
 
         int euclid(int a, int b){
@@ -67,13 +99,13 @@
             printf("Result: %i \n", res);
             return 0;
         }
-    \end{listing}
+    \end{lstlisting}
 
     Dieses Programm akzeptiert zwei Ganzzahlen (A und B) als Parameter und ermittelt rekursiv den kleinsten gemeinsamen Teiler.
 
     \subsubsection*{Kompilieren und Ausf"uhren}
     Um das Programm auszuf"uhren, kann es mit g++ kompiliert, assembled und gelinkt werden: \\
-    \textbf{g++ euclidean.cpp -o euclidean.out \\
+    \textbf{g++ euclidean.cpp -o euclidean.out} \\
     Ausgef"uhrt wird das Programm (unter Linux) dann einfach folgendermaßen: \textbf{./euclidean.out}
 
     \subsubsection{Debuggen}
@@ -107,13 +139,13 @@
     Wobei der Compiler ohne Linker aufgerufen wird und die entsprechenden .o Dateien erstellt.
 
     Um nun ein Makefile zur Erstellung eines fertigen C++ Programmes zu erhalten, kann man die Link-Anweisung in Abh"angigkeit zur Kompilierung anf"ugen: \\
-    \begin{listing}
+    \begin{lstlisting}
         link: euclid.o
         g++ -o euclidean euclidean.o
-    \end{listing}
+    \end{lstlisting}
 
     Somit (mit Aufruf aller Befehle) sieht das Makefile dann folgenderma"sen aus: \\
-    \begin{listing}
+    \begin{lstlisting}[language=make, caption=Makefile]
         all: link
 
         euclid.o: euclidean.cpp
@@ -121,7 +153,7 @@
 
         link: euclid.o
         g++ -o euclidean euclidean.o
-    \end{listing}
+    \end{lstlisting}
 
 
     \section{Aufgabe 3 - Cmake}
@@ -141,11 +173,11 @@
 
     \subsection{konkrete L"osung}
     Zun"achst wird eine CMakeLists.txt Datei als Anweisung für Cmake erstellt. Diese hat folgenden Inhalt:
-    \begin{listing}
+    \begin{lstlisting}
         cmake_minimum_required(VERSION 3.0)
         project(euclidean)
         add_executable(euclidean euclidean.cpp)
-    \end{listing}
+    \end{lstlisting}
 
     Wird nun CMake aufgerufen (cmake .), so wird ein Makefile erstellt, welches die Kompilierung des Programms "euclidean" automatisiert. \\
     Anschlie"send kann das Programm mit \textbf{make} kompiliert werden. \\
