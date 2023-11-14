@@ -1,0 +1,10 @@
+services:
+  apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apache
+    volumes:
+      - ./apache-config/sites/index.html:/var/www/eii/index.html
+    ports:
+      - 8080:8080

@@ -131,28 +131,15 @@
     \subsection{L"osungskonzept}
     Die Struktur eines "Make" Commands ist insofern relativ simpel: \\
     \textbf{Ziel: Abh"angigkeiten} \\
-    Sprich um z.B die .o Dateien f"ur die "euclidean.cpp" Datei zu erstellen, muss das Makefile folgenden Befehl beinhalten: \\
-    \begin{listing}
-        euclid.o: euclidean.cpp
-        g++ -c euclidean.cpp
-    \end{listing}
-    Wobei der Compiler ohne Linker aufgerufen wird und die entsprechenden .o Dateien erstellt.
-
-    Um nun ein Makefile zur Erstellung eines fertigen C++ Programmes zu erhalten, kann man die Link-Anweisung in Abh"angigkeit zur Kompilierung anf"ugen: \\
-    \begin{lstlisting}
-        link: euclid.o
-        g++ -o euclidean euclidean.o
-    \end{lstlisting}
-
     Somit (mit Aufruf aller Befehle) sieht das Makefile dann folgenderma"sen aus: \\
     \begin{lstlisting}[language=make, caption=Makefile]
-        all: link
 
-        euclid.o: euclidean.cpp
-        g++ -c euclidean.cpp
+    Euclid: euclidean.cpp
+	gcc euclidean.cpp -o Euclid
 
-        link: euclid.o
-        g++ -o euclidean euclidean.o
+
+    EuclidD: euclidean.cpp
+	gcc -g euclidean.cpp -o EuclidD
     \end{lstlisting}
 
 
