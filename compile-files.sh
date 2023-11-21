@@ -53,7 +53,6 @@ workdir_path=$(pwd)
     echo "Successfully copied file to $workdir_path/dist/$newFileName.pdf "
   else
     echo "Failed to compile $fileName"
-    echo "Logging logs..."
     cat out/"$(basename "$fileName" .tex)".log
     exit 1
   fi
