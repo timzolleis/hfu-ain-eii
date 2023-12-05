@@ -1,0 +1,115 @@
+\documentclass[a4paper,11pt,titlepage]{article}
+
+\usepackage{ucs}
+\usepackage[german,ngerman]{babel}
+\usepackage{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[pdftex]{hyperref}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\begin{document}
+
+    \title{Einf\"uhrung in die Informatik\\
+    Ausarbeitung \"Ubung N}
+
+
+    \author{Tim Zolleis}
+
+    \date{\today}
+
+    \maketitle{\thispagestyle{plain}}
+
+
+    \section{Aufgabe 1 - Boolsche Algebra}
+
+    \subsection{Problem}
+    Hier sollen zun"achst Boolsche Terme gel"ost, und anschließend weitere Terme vereinfacht werden.
+
+    \subsection{konkrete L"osung}
+
+    \subsubsection{L"osen}
+    \begin{enumerate}
+        \item $\neg \blacksquare$: $\square$
+        \item $\neg \square \lor \square$: $true$
+        \item $(\blacksquare \lor \blacksquare) \land \neg(\blacksquare \land \blacksquare): false$
+        \item $!1&&(1||(1&&(0||1)))&&1$: $false$
+    \end{enumerate}
+
+    \subsubsection{Vereinfachen}
+    \begin{enumerate}
+        \item $\neg a \land \neg b$
+        \item $a \lor \neg c$
+        \item $false$
+        \item $a$
+        \item $a \land \neg b$
+        \item $a \land c$
+        \item $\neg (a \land b) \lor \neg c$
+        \item $(a \land b) \land \neg c$
+    \end{enumerate}
+
+
+    \section{Aufgabe 2 - Git}
+
+    \subsection{Problem}
+    Zun"achst sollen die vereinfachten Terme in Python implementiert, und diese Python Implementation dann auf Github hochgeladen werden.
+
+    \subsection{L"osungskonzept}
+    Zuerst muss sich mit der Python-Syntax vertraut gemacht werden, dann ein Git-Repository erstellt und hochgeladen werden.
+
+    \subsection{konkrete L"osung}
+
+    \subsubsection{Implementierung in Python}
+    Schließlich kann mithilfe von matplotlib die Grafik erstellt werden:
+    \begin{lstlisting}[language=Python]
+        def task1(a, b):
+            return not a and not b
+
+        def task2(a, c):
+            return a or not c
+        
+        def task3():
+            return False
+        
+        def task4(a):
+            return a
+        
+        def task5(a ,b):
+            return a and not b
+        
+        def task6(a, c):
+            return a and c
+        
+        def task7(a, b, c):
+            return not (a and b) or not c
+        
+        def task8(a, b, c):
+            return (a and b) and not c
+    \end{lstlisting}
+
+    \subsubsection{Git}
+    \begin{enumerate}
+        \item Zuerst muss ein neues lokales Repository erstellt werden: \textbf{git init}.
+        \item Um nun Github als Server zu verwenden, muss dort auch ein entsprechendes Repository erstellt werden. Nach der Erstellung erhalten wir eine Github-URL um diese als Origin in unser Git Projekt einzutragen: \textbf{https://github.com/timzolleis/hfu-ain-eii.git}
+        \item Diese URL kann nun als Remote hinzugef"ugt werden: \textbf{git remote add origin https://github.com/timzolleis/hfu-ain-eii.git}
+        \item Nun k"onnen die Dateien mit \textbf{git add main.py} hinzugef"ugt werden, und mit \textbf{git commit -m "Initial commit"} commited werden. Git add f"ugt die entsprechende Python Datei der Stagin-Area hinzu, git commit erstellt einen Commit mit der entsprechenden "Initial Commit" Nachricht.
+        \item Weitere Commit-Messages sollten beschreiben, was der commit macht. Hier k"onnen auch Conventions befolgt werden (z.b \textbf{git commit -m "feat(tasks): add task 1"}).
+        \item Nachdem unsere "Anderungen gespeichert wurden, k"onnen wir diese mit \textbf{git push origin master} auf Github hochladen. (Sollten wir noch nicht authentifiziert sein, werden wir nach unseren Zugangsdten gefragt)
+        \item Auf Github kann standarm"aßig nur der Ersteller in das Repository pushen, alle anderen "Anderungen m"ussen "uber Pull-Requests eingebracht werden. Eine feinere Zugriffskontrolle ist "uber die Repository-Einstellungen m"oglich.
+        \item Merge Konflikte k"onnen entstehen, wenn zwei Commits, die an den gleichen Teilen der Applikation "Anderungen vornehmen miteinander verbunden werden sollen. Hier muss dann manuell entschieden werden, welche "Anderungen "ubernommen werden sollen. (Sog. den Merge Konflikt l"osen). Hierbei k"onnen "Anderungen auch Zeilenweise ineinander "ubernommen werden.
+    \end{enumerate}
+
+    \subsection{Tests}
+    \begin{enumerate}
+        \item "Uberpr"ufen der "Anderungen auf Github
+    \end{enumerate}
+
+
+    \section{Resumee zur dieser "Ubungsaufgabe}
+    Dauer f"ur
+    \begin{itemize}
+        \item Durchf"uhrung: 30min
+        \item Dokumentation: 15min
+    \end{itemize}
+
+\end{document}
