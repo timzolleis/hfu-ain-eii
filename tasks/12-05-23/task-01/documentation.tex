@@ -33,7 +33,7 @@
         \item $\neg \blacksquare$: $\square$
         \item $\neg \square \lor \square$: $true$
         \item $(\blacksquare \lor \blacksquare) \land \neg(\blacksquare \land \blacksquare): false$
-        \item $!1&&(1||(1&&(0||1)))&&1$: $false$
+        \item $!1\&\&(1||(1\&\&(0||1)))\&\&1$: $false$
     \end{enumerate}
 
     \subsubsection{Vereinfachen}
@@ -60,7 +60,6 @@
     \subsection{konkrete L"osung}
 
     \subsubsection{Implementierung in Python}
-    Schließlich kann mithilfe von matplotlib die Grafik erstellt werden:
     \begin{lstlisting}[language=Python]
         def task1(a, b):
             return not a and not b
