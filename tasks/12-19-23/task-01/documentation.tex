@@ -1,0 +1,150 @@
+\documentclass[a4paper,11pt,titlepage]{article}
+
+\usepackage{ucs}
+\usepackage[german,ngerman]{babel}
+\usepackage{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[pdftex]{hyperref}
+\usepackage{listings}
+
+\begin{document}
+
+    \title{Einf\"uhrung in die Informatik\\
+    Ausarbeitung \"Ubung 6}
+
+
+    \author{Tim Zolleis}
+
+    \date{\today}
+
+    \maketitle{\thispagestyle{plain}}
+
+
+    \section{Aufgabe 1 - Neuronales Netz}
+
+    \subsection{Problem}
+    Zum Trainieren des neuronalen Netzes m"ussen zun"achst die folgenden Vorraussetzungen erf"ullt sein:
+    \begin{enumerate}
+        \item Installation und Setup von Jupiter Notebook
+        \item Installation von Pytorch
+    \end{enumerate}
+
+    \subsection{L"osungskonzept}
+    Nach der Installation vom Jupyter Notebook und Pytorch m"ussen zun"achst die Trainings und Testdatens"atze heruntergeladen werden
+    \begin{lstlisting}[language=Python]
+        transform = transforms.Compose(
+    [transforms.ToTensor(),
+     transforms.Normalize((0.5,), (0.5,))])
+
+    # Loading the training dataset
+    trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+
+    # Loading the test dataset
+    testset = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False)
+    \end{lstlisting}
+
+    Anschließend definieren wir das neuronale Netz mit 3 Layern, wobei der erste Layer 128 Neuronen hat, der zweite 64 und der dritte 10.
+    \begin{lstlisting}[language=Python]
+    class MNet(nn.Module):
+        def __init__(self):
+            super(MNet, self).__init__()
+            # First layer: 784 input features (28x28 pixels), 128 output features
+            self.fc1 = nn.Linear(784, 128)
+
+            # Second layer: 128 input features, 64 output features
+            self.fc2 = nn.Linear(128, 64)
+
+            # Output layer: 64 input features, 10 output features (for 10 classes)
+            self.fc3 = nn.Linear(64, 10)
+
+        def forward(self, x):
+            # Flatten the image
+            x = x.view(-1, 28*28)
+
+            # Apply ReLU activation function after each hidden layer
+            x = F.relu(self.fc1(x))
+            x = F.relu(self.fc2(x))
+
+        # No activation function needed for the output layer
+        x = self.fc3(x)
+
+        # Applying log_softmax for classification purposes
+        return F.log_softmax(x, dim=1)
+    \end{lstlisting}
+    F"ur die beiden versteckten Layer wird die ReLU Aktivierungsfunktion verwendet, f"ur den Output Layer die log\_softmax Funktion.
+
+    Zum Training wird noch ein Optimizer und ein Loss definiert. Hier wird der Adam Optimizer und der CrossEntropyLoss verwendet.
+    \begin{lstlisting}[language=Python]
+        net = MNet()
+        criterion = nn.CrossEntropyLoss()
+        optimizer = optim.Adam(net.parameters(), lr=0.001)
+    \end{lstlisting}
+
+    \subsection{Training}
+    Nun kann das Netz trainiert werden. Hierf"ur wird zun"achst die Anzahl der Epochen festgelegt, in diesem Fall 20.
+    \begin{lstlisting}[language=Python]
+        num_epochs = 20
+
+    with open("run_log.txt", "w") as log_file:
+        for epoch in range(num_epochs):
+            running_loss = 0.0
+            for i, data in enumerate(trainloader, 0):
+                inputs, labels = data
+
+                optimizer.zero_grad()
+
+                outputs = net(inputs)
+                loss = criterion(outputs, labels)
+                loss.backward()
+                optimizer.step()
+
+                running_loss += loss.item()
+                if i % 100 == 99:
+                    log_message = f'Epoch {epoch + 1}, Batch {i + 1}, Loss: {running_loss / 100:.3f}\n'
+                    print(f'Epoch {epoch + 1}, Batch {i + 1}, Loss: {running_loss / 100:.3f}')
+                    log_file.write(log_message)
+                    running_loss = 0.0
+
+    print('Finished Training')
+    \end{lstlisting}
+    Ich schreibe den Output hier in eine Datei, um sp"ater verschiedene Trainingsl"aufe vergleichen zu k"onnen.
+
+    \subsection{Test}
+    Nach dem Training kann das Netz getestet werden. Hierf"ur wird zun"achst die Anzahl der korrekt klassifizierten Bilder und die Anzahl der insgesamt klassifizierten Bilder gez"ahlt.
+    \begin{lstlisting}[language=Python]
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for data in testloader:
+                images, labels = data
+                outputs = net(images)
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+
+        accuracy = 100 * correct / total
+        with open('training_log.txt', 'a') as f:
+            accuracy_message = f'Accuracy of the network on the 10000 test images with Adam optimizer and 20 epochs: {accuracy:.2f} %\n'
+            print(accuracy_message)
+            f.write(accuracy_message)
+    \end{lstlisting}
+
+    Um hier wieder einen Vergleich zu haben, schreibe ich die Accuracy in die gleiche Datei wie den Trainingslog.
+    In diesem Fall erhalte ich eine Accuracy von 97.71\%.
+
+    Beobachtet man die Relation von Loss, Epochen und Genaugkeit, so l"asst sich ein absinken des Losses und der Genauigkeit ab ca. 10 Epochen beobachten.
+    Mit 20 Epochen hat man jedoch noch ein sehr gutes Ver"haltnis von Dauer und Genauigkeit.
+    Trainiert man weiter, l"auft man Gefahr das Modell zu "ubertrainieren, was zu einer schlechteren Genauigkeit f"uhren kann.
+
+    \section{Resumee zur dieser "Ubungsaufgabe}
+    Dauer f"ur
+    \begin{itemize}
+        \item Durchf"uhrung: 1h
+        \item Dokumentation: 15min
+    \end{itemize}
+
+    \begin{thebibliography}{99}
+    \end{thebibliography}
+\end{document}
