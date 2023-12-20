@@ -1,5 +1,0 @@
-Accuracy of the network on the 10000 test images with adam optimizer and 10 epochs: 97.78 %
-Accuracy of the network on the 10000 test images with adam optimizer and 10 epochs: 95.07 %
-Accuracy of the network on the 10000 test images with SGD optimizer and 10 epochs: 95.07 %
-Accuracy of the network on the 10000 test images with SGD optimizer and 10 epochs: 96.59 %
-Accuracy of the network on the 10000 test images with Adam optimizer and 20 epochs: 97.71 %

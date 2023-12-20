@@ -6,7 +6,38 @@
 \usepackage[pdftex]{graphicx}
 \usepackage[pdftex]{hyperref}
 \usepackage{listings}
+\usepackage{xcolor}
 
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95} % Very light gray
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=tlbr, % adds a frame around the code
+    framesep=5pt, % padding thickness
+    framerule=0pt % frame thickness
+}
+
+\lstset{style=mystyle}
 \begin{document}
 
     \title{Einf\"uhrung in die Informatik\\
@@ -134,7 +165,7 @@
     Um hier wieder einen Vergleich zu haben, schreibe ich die Accuracy in die gleiche Datei wie den Trainingslog.
     In diesem Fall erhalte ich eine Accuracy von 97.71\%.
 
-    Beobachtet man die Relation von Loss, Epochen und Genaugkeit, so l"asst sich ein absinken des Losses und der Genauigkeit ab ca. 10 Epochen beobachten.
+    Beobachtet man die Relation von Loss, Epochen und Genaugkeit, so l"asst sich ein absinken des Losses und der Genauigkeit ab ca. 3 Epochen beobachten.
     Mit 20 Epochen hat man jedoch noch ein sehr gutes Ver"haltnis von Dauer und Genauigkeit.
     Trainiert man weiter, l"auft man Gefahr das Modell zu "ubertrainieren, was zu einer schlechteren Genauigkeit f"uhren kann.
 
